@@ -1,184 +1,121 @@
-﻿# src/lab01/model.py
-import validate  # абсолютный импорт (для запуска из той же папки)
-
+﻿import validate
 class Weapon:
-    """Класс оружия для игры"""
-    
-    # ----- АТРИБУТЫ КЛАССА (общие для всех объектов) -----
-    WEAPON_TYPES = {
-        'sword': 'Меч',
-        'bow': 'Лук',
-        'staff': 'Посох',
-        'dagger': 'Кинжал'
-    }
-    
-    RARITY_MULTIPLIERS = {
-        'common': 1.0,    # обычное
-        'rare': 1.5,      # редкое
-        'epic': 2.0,      # эпическое
-        'legendary': 3.0  # легендарное
-    }
-    
-    # Константы
+    """Класс оружия в игре"""
+    WEAPON_TYPES={"sword": "Меч",
+                  "bow": "Лук",
+                  "staff": "Посох",
+                  "dagger": "Кинжал"}
+    RARITY_MULTIPLIERS = {"common": 1.0,
+                          "rare": 1.5,
+                          "epic": 2.0,
+                          "legendary" : 3.0}
     MAX_LEVEL = 10
-    MIN_LEVEL = 1
-    MAX_DURABILITY = 100
-    MIN_DURABILITY = 0
-    
-    # ----- КОНСТРУКТОР -----
-    def __init__(self, name: str, weapon_type: str, rarity: str = 'common'):
-        """
-        Создание нового оружия
-        :param name: название (например, "Экскалибур")
-        :param weapon_type: тип (sword, bow, staff, dagger)
-        :param rarity: редкость (common, rare, epic, legendary)
-        """
-        
-        # Валидация входных данных (используем функции из validate.py)
+    MIN_LEVEL = 1 
+    MAX_DURABILITY =  100
+    MIN_DURABILITY = 0 
+    def __init__(self, name: str,  weapon_type: str, rarity: str = "common"):
         validate.validate_name(name)
-        validate.validate_weapon_type(weapon_type, self.WEAPON_TYPES.keys())
+        validate.validate_weapon_type(weapon_type,self.WEAPON_TYPES.keys())
         validate.validate_rarity(rarity, self.RARITY_MULTIPLIERS.keys())
-        
-        # Закрытые атрибуты (с подчеркиванием)
         self._name = name.strip()
-        self._weapon_type = weapon_type
+        self._weapon_type=weapon_type
         self._rarity = rarity
         self._level = 1
         self._durability = 100
         self._damage = self._calculate_damage()
-    
-    # ----- ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ -----
-    
     def _calculate_damage(self):
-        """Расчет урона на основе типа, редкости и уровня"""
-        base_damage = {
-            'sword': 10,
-            'bow': 8,
-            'staff': 12,
-            'dagger': 6
-        }
-        base = base_damage.get(self._weapon_type, 10)
-        multiplier = self.RARITY_MULTIPLIERS.get(self._rarity, 1.0)
-        level_bonus = 1 + (self._level - 1) * 0.2  # +20% за уровень
-        return int(base * multiplier * level_bonus)
-    
-    # ----- ГЕТТЕРЫ (чтение данных) -----
-    
+        base_damage={"sword": 10,
+                     "bow": 8,
+                     "staff": 12,
+                     "dagger": 6}
+        base=base_damage.get(self._weapon_type,10)
+        multiplier = self.RARITY_MULTIPLIERS.get(self.rarity,10)
+        level_bonus= 1+(self._level-1)*0.2
+        return int(base*multiplier*level_bonus)
     @property
     def name(self):
-        """Имя оружия (только чтение)"""
+        """Имя оружия, чтение"""
         return self._name
-    
     @property
     def weapon_type(self):
-        """Тип оружия (только чтение)"""
+        """Тип оружия, чтение"""
         return self._weapon_type
-    
     @property
     def rarity(self):
-        """Редкость оружия (только чтение)"""
+        """Редкость, чтение"""
         return self._rarity
-    
     @property
     def level(self):
-        """Уровень оружия"""
-        return self._level
+        """Уровень, чтение"""
+        return self._level     
     
     @level.setter
-    def level(self, value):
-        """Установка уровня с проверкой"""
-        # Проверяем, что оружие не сломано
-        validate.validate_not_broken(self.is_broken, "улучшить оружие")
-        
-        # Проверяем корректность нового уровня
+    def level(self,value):
+        validate.validate_not_broken(self.is_broken,"Улучшить оружие")
         validate.validate_level(value, self.MIN_LEVEL, self.MAX_LEVEL)
-        
-        # Проверяем возможность повышения
-        validate.validate_level_upgrade(self._level, value, self.MAX_LEVEL)
-        
-        self._level = value
-        self._damage = self._calculate_damage()  # пересчет урона
-        print(f"✨ Уровень повышен до {value}")
-    
+        validate.validate_level_upgrade(self._level,value, self.MAX_LEVEL)
+        self._level=value
+        self._damage = self._calculate_damage()
+        print(f"Уровень повышен до {value}")
     @property
     def durability(self):
-        """Прочность оружия"""
+        """Прочность оружия, чтение"""
         return self._durability
-    
     @durability.setter
     def durability(self, value):
-        """Установка прочности с проверкой"""
-        # Проверяем корректность значения
-        validate.validate_durability(value, self.MIN_DURABILITY, self.MAX_DURABILITY)
-        
-        old_value = self._durability
-        self._durability = value
-        
-        # Логические сообщения о состоянии (для демонстрации)
-        if self._durability == 0 and old_value > 0:
-            print("💔 ОРУЖИЕ СЛОМАНО! Требуется ремонт.")
-        elif self._durability < 30 and self._durability > 0:
-            print("⚠️ Оружие в плохом состоянии")
-        elif self._durability > old_value:
-            print("🔧 Оружие отремонтировано")
-    
+        """Установить прочность, с проверкой"""
+        validate.validate_durability(value,self.MIN_DURABILITY, self.MAX_DURABILITY) 
+        old_value=self._durability
+        self._durability=value
+        if self.durability == 0 and old_value > 0 :
+            print("Оружие сломано, нужен ремонт") 
+        elif self._durability <30 and self._durability >0:
+            print("Оружие в плохом состоянии") 
+        elif self.durability>old_value:
+            print("Оружие отремонтировано")     
     @property
     def damage(self):
-        """Урон оружия (вычисляется автоматически)"""
+        """Урон оружия, чтение"""
         return self._damage
-    
     @property
     def is_broken(self):
-        """Проверка, сломано ли оружие"""
-        return self._durability <= 0
-    
+        return self._durability <=0
     @property
     def description(self):
-        """Красивое описание оружия"""
-        return f"⚔ {self._rarity} {self._weapon_type} '{self._name}' (ур.{self._level}, урон {self._damage})"
-    
-    # ----- МАГИЧЕСКИЕ МЕТОДЫ -----
-    
+        """Характеристики оружия"""
+        return (f"{self._rarity} {self._weapon_type} '{self._name}' (ур.{self._level}, урон {self._damage}")
+# Magicheskie metods
     def __str__(self):
-        """Для пользователей - красивое описание"""
+        """Преобразовывает объект в строку"""
         return self.description
-    
     def __repr__(self):
-        """Для разработчиков - как создать объект"""
+        """В строку для разраба """
         return f"Weapon('{self._name}', '{self._weapon_type}', '{self._rarity}')"
-    
-    def __eq__(self, other):
-        """Сравнение двух объектов"""
+    def __eq__(self):
+        """"Для сравнения объектов"""
         if not isinstance(other, Weapon):
             return False
+# Если сравниваем объект с другого класса, они не равны
         return (self._name == other._name and 
                 self._weapon_type == other._weapon_type and 
                 self._rarity == other._rarity and
                 self._level == other._level)
-    
-    # ----- БИЗНЕС-МЕТОДЫ -----
-    
     def upgrade(self):
         """Улучшить оружие на 1 уровень"""
-        # Проверка состояния уже есть в сеттере level
         if self._level >= self.MAX_LEVEL:
-            print(f"✨ Оружие уже имеет максимальный уровень ({self.MAX_LEVEL})!")
+            print(f"Оружие уже имеет максимальный уровень ({self.MAX_LEVEL})!")
             return False
-        
         self.level = self._level + 1
         return True
-    
+
     def repair(self):
         """Починить оружие до 100%"""
         self.durability = self.MAX_DURABILITY
         return True
-    
+
     def attack(self):
-        """Атаковать оружием (уменьшает прочность)"""
-        # Проверяем, что оружие не сломано
+        """Атаковать оружием"""
         validate.validate_not_broken(self.is_broken, "атаковать")
-        
-        # Потеря прочности зависит от редкости
         loss_table = {
             'legendary': 5,
             'epic': 10,
@@ -186,18 +123,16 @@ class Weapon:
             'common': 20
         }
         durability_loss = loss_table.get(self._rarity, 20)
-        
         new_durability = self._durability - durability_loss
         if new_durability < 0:
             new_durability = 0
-        
         self.durability = new_durability
         return self._damage
-    
+
     def get_status(self):
         """Получить полный статус оружия"""
-        status = "💔 СЛОМАНО" if self.is_broken else "✅ ИСПРАВНО"
-        return (f"⚔ {self._name} | "
+        status = "СЛОМАНО" if self.is_broken else "ИСПРАВНО"
+        return (f"{self._name} | "
                 f"Тип: {self.WEAPON_TYPES[self._weapon_type]} | "
                 f"Редкость: {self._rarity.upper()} | "
                 f"Уровень: {self._level}/{self.MAX_LEVEL} | "

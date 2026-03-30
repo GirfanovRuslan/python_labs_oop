@@ -1,177 +1,169 @@
-# demo.py - ПОЛНАЯ ДЕМОНСТРАЦИЯ КЛАССА Weapon
+# src/lab01/demo.py
 
 from model import Weapon
 
+
 def main():
-    """Главная функция демонстрации"""
-    
     print("=" * 60)
     print("ЛАБОРАТОРНАЯ РАБОТА №1 - КЛАСС WEAPON")
     print("=" * 60)
     
-    # ----- 1. СОЗДАНИЕ ОБЪЕКТОВ -----
-    print("\n1. СОЗДАНИЕ ОБЪЕКТОВ:")
-    print("-" * 40)
+    # =========================================================================
+    # СЦЕНАРИЙ 1: НОРМАЛЬНАЯ РАБОТА
+    # =========================================================================
+    print("\n" + "=" * 60)
+    print("СЦЕНАРИЙ 1: НОРМАЛЬНАЯ РАБОТА С ОРУЖИЕМ")
+    print("=" * 60)
     
-    try:
-        sword = Weapon("Экскалибур", "sword", "legendary")
-        bow = Weapon("Лунный лук", "bow", "epic")
-        staff = Weapon("Посох магии", "staff", "rare")
-        dagger = Weapon("Кинжал тени", "dagger", "common")
-        
-        print("✓ Создано 4 объекта:")
-        print(f"  {sword}")
-        print(f"  {bow}")
-        print(f"  {staff}")
-        print(f"  {dagger}")
-    except Exception as e:
-        print(f"✗ Ошибка: {e}")
-        return
+    print("\n1.1 Создание легендарного меча")
+    sword = Weapon("Экскалибур", "sword", "legendary")
+    print(f"   Создан: {sword}")
+    print(f"   Характеристики: уровень {sword.level}, урон {sword.damage}, прочность {sword.durability}%")
     
-    # ----- 2. ДЕМОНСТРАЦИЯ ГЕТТЕРОВ -----
-    print("\n2. ДЕМОНСТРАЦИЯ ГЕТТЕРОВ (чтение данных):")
-    print("-" * 40)
+    print("\n1.2 Улучшение оружия")
+    sword.upgrade()
+    print(f"   После улучшения: уровень {sword.level}, урон {sword.damage}")
     
-    print(f"  name: {sword.name}")
-    print(f"  weapon_type: {sword.weapon_type}")
-    print(f"  rarity: {sword.rarity}")
-    print(f"  level: {sword.level}")
-    print(f"  damage: {sword.damage}")
-    print(f"  durability: {sword.durability}")
-    print(f"  is_broken: {sword.is_broken}")
-    print(f"  description: {sword.description}")
+    sword.upgrade()
+    print(f"   После второго улучшения: уровень {sword.level}, урон {sword.damage}")
     
-    # ----- 3. ДЕМОНСТРАЦИЯ СЕТТЕРОВ -----
-    print("\n3. ДЕМОНСТРАЦИЯ СЕТТЕРОВ (изменение данных):")
-    print("-" * 40)
+    print("\n1.3 Атака оружием")
+    for i in range(3):
+        damage = sword.attack()
+        print(f"   Атака {i+1}: урон {damage}, прочность {sword.durability}%")
     
-    print(f"  Текущий уровень: {sword.level}")
-    sword.level = 3
-    print(f"  После повышения: уровень = {sword.level}")
-    print(f"  Урон изменился: {sword.damage}")
+    print("\n1.4 Ремонт оружия")
+    sword.repair()
+    print(f"   После ремонта: прочность {sword.durability}%")
     
-    print(f"\n  Текущая прочность: {sword.durability}")
-    sword.durability = 50
-    print(f"  После установки: прочность = {sword.durability}")
+    print("\n1.5 Полный статус")
+    print(f"   {sword.get_status()}")
     
-    # ----- 4. ДЕМОНСТРАЦИЯ ВАЛИДАЦИИ -----
-    print("\n4. ДЕМОНСТРАЦИЯ ВАЛИДАЦИИ (обработка ошибок):")
-    print("-" * 40)
+    # =========================================================================
+    # СЦЕНАРИЙ 2: ДЕМОНСТРАЦИЯ ВАЛИДАЦИИ (ОБРАБОТКА ОШИБОК)
+    # =========================================================================
+    print("\n" + "=" * 60)
+    print("СЦЕНАРИЙ 2: ДЕМОНСТРАЦИЯ ВАЛИДАЦИИ (ОБРАБОТКА ОШИБОК)")
+    print("=" * 60)
     
-    # Ошибки при создании
-    print("\n  4.1 Ошибки при создании:")
+    print("\n2.1 Ошибки при создании объекта:")
+    
+    print("   Попытка создать оружие с пустым именем:")
     try:
         bad = Weapon("", "sword", "common")
     except ValueError as e:
-        print(f"    ✓ Пустое имя: {e}")
+        print(f"     Ошибка: {e}")
     
+    print("   Попытка создать оружие с неверным типом:")
     try:
         bad = Weapon("Меч", "gun", "common")
     except ValueError as e:
-        print(f"    ✓ Неверный тип: {e}")
+        print(f"     Ошибка: {e}")
     
-    # Ошибки при изменении
-    print("\n  4.2 Ошибки при изменении:")
+    print("   Попытка создать оружие с неверной редкостью:")
     try:
-        sword.level = 11
+        bad = Weapon("Меч", "sword", "mythic")
     except ValueError as e:
-        print(f"    ✓ Уровень 11: {e}")
+        print(f"     Ошибка: {e}")
     
+    print("\n2.2 Ошибки при изменении уровня:")
+    test_sword = Weapon("Тестовый меч", "sword", "common")
+    print(f"   Текущий уровень: {test_sword.level}")
+    
+    print("   Попытка установить уровень 11:")
     try:
-        sword.level = 1
+        test_sword.level = 11
     except ValueError as e:
-        print(f"    ✓ Понижение уровня: {e}")
+        print(f"     Ошибка: {e}")
     
+    print("   Попытка установить уровень 0:")
     try:
-        sword.durability = -50
+        test_sword.level = 0
     except ValueError as e:
-        print(f"    ✓ Отрицательная прочность: {e}")
+        print(f"     Ошибка: {e}")
     
-    # ----- 5. ДЕМОНСТРАЦИЯ МАГИЧЕСКИХ МЕТОДОВ -----
-    print("\n5. ДЕМОНСТРАЦИЯ МАГИЧЕСКИХ МЕТОДОВ:")
-    print("-" * 40)
+    test_sword.level = 5
+    print(f"   Уровень повышен до {test_sword.level}")
     
-    print(f"  __str__: {sword}")
-    print(f"  __repr__: {repr(sword)}")
-    
-    sword2 = Weapon("Экскалибур", "sword", "legendary")
-    sword2.level = 3
-    print(f"  sword == sword2: {sword == sword2}")
-    
-    # ----- 6. ДЕМОНСТРАЦИЯ АТРИБУТОВ КЛАССА -----
-    print("\n6. ДЕМОНСТРАЦИЯ АТРИБУТОВ КЛАССА:")
-    print("-" * 40)
-    
-    print(f"  Через класс:")
-    print(f"    Weapon.WEAPON_TYPES: {Weapon.WEAPON_TYPES}")
-    print(f"    Weapon.RARITY_MULTIPLIERS: {Weapon.RARITY_MULTIPLIERS}")
-    print(f"    Weapon.MAX_LEVEL: {Weapon.MAX_LEVEL}")
-    
-    print(f"\n  Через экземпляр:")
-    print(f"    sword.WEAPON_TYPES['sword']: {sword.WEAPON_TYPES['sword']}")
-    print(f"    sword.RARITY_MULTIPLIERS['legendary']: {sword.RARITY_MULTIPLIERS['legendary']}")
-    
-    # ----- 7. ДЕМОНСТРАЦИЯ БИЗНЕС-МЕТОДОВ -----
-    print("\n7. ДЕМОНСТРАЦИЯ БИЗНЕС-МЕТОДОВ:")
-    print("-" * 40)
-    
-    test = Weapon("Тестовое", "sword", "epic")
-    print(f"  Начальное состояние: {test}")
-    
-    # upgrade
-    print("\n  7.1 upgrade():")
-    test.upgrade()
-    print(f"    После upgrade: уровень {test.level}, урон {test.damage}")
-    
-    # attack
-    print("\n  7.2 attack():")
-    for i in range(3):
-        damage = test.attack()
-        print(f"    Атака {i+1}: урон {damage}, прочность {test.durability}%")
-    
-    # repair
-    print("\n  7.3 repair():")
-    test.repair()
-    print(f"    После ремонта: прочность {test.durability}%")
-    
-    # ----- 8. ДЕМОНСТРАЦИЯ ЛОГИЧЕСКОГО СОСТОЯНИЯ -----
-    print("\n8. ДЕМОНСТРАЦИЯ ЛОГИЧЕСКОГО СОСТОЯНИЯ:")
-    print("-" * 40)
-    
-    fragile = Weapon("Хрупкое", "dagger", "common")
-    print(f"  Создано: {fragile}")
-    
-    # Доводим до поломки
-    print("\n  8.1 Используем до поломки:")
-    while not fragile.is_broken:
-        fragile.attack()
-        print(f"    Прочность: {fragile.durability}%")
-    
-    # Пытаемся использовать сломанное
-    print("\n  8.2 Попытка использовать сломанное:")
+    print("   Попытка понизить уровень:")
     try:
-        fragile.attack()
+        test_sword.level = 3
     except ValueError as e:
-        print(f"    ✓ Ошибка: {e}")
+        print(f"     Ошибка: {e}")
     
-    # Ремонтируем
-    print("\n  8.3 Ремонт:")
-    fragile.repair()
-    print(f"    После ремонта: прочность {fragile.durability}%")
+    print("\n2.3 Ошибки при изменении прочности:")
+    print("   Попытка установить отрицательную прочность:")
+    try:
+        test_sword.durability = -50
+    except ValueError as e:
+        print(f"     Ошибка: {e}")
     
-    # ----- 9. ДЕМОНСТРАЦИЯ СТАТУСА -----
-    print("\n9. ДЕМОНСТРАЦИЯ ПОЛНОГО СТАТУСА:")
-    print("-" * 40)
+    print("   Попытка установить прочность выше 100:")
+    try:
+        test_sword.durability = 150
+    except ValueError as e:
+        print(f"     Ошибка: {e}")
     
-    epic_sword = Weapon("Легендарный меч", "sword", "legendary")
-    epic_sword.level = 5
-    epic_sword.durability = 75
-    print(epic_sword.get_status())
-    
-    # ----- 10. ИТОГ -----
+    # =========================================================================
+    # СЦЕНАРИЙ 3: ДЕМОНСТРАЦИЯ ЛОГИЧЕСКИХ СОСТОЯНИЙ И ИЗМЕНЕНИЯ СОСТОЯНИЯ
+    # =========================================================================
     print("\n" + "=" * 60)
-    print("✅ ДЕМОНСТРАЦИЯ ЗАВЕРШЕНА УСПЕШНО")
+    print("СЦЕНАРИЙ 3: ЛОГИЧЕСКИЕ СОСТОЯНИЯ И ИЗМЕНЕНИЕ СОСТОЯНИЯ")
     print("=" * 60)
+    
+    print("\n3.1 Создание обычного меча")
+    fragile = Weapon("Хрупкий меч", "sword", "common")
+    print(f"   Создан: {fragile}")
+    print(f"   Состояние: is_broken = {fragile.is_broken}")
+    
+    print("\n3.2 Использование оружия до поломки (изменение состояния)")
+    attack_count = 0
+    while not fragile.is_broken:
+        damage = fragile.attack()
+        attack_count += 1
+        print(f"   Атака {attack_count}: урон {damage}, прочность {fragile.durability}%, is_broken = {fragile.is_broken}")
+    
+    print(f"\n   Оружие сломалось после {attack_count} атак")
+    print(f"   Состояние: is_broken = {fragile.is_broken}")
+    
+    print("\n3.3 Попытка использовать сломанное оружие")
+    print("   Попытка атаковать:")
+    try:
+        fragile.attack()
+    except ValueError as e:
+        print(f"     Ошибка: {e}")
+    
+    print("   Попытка улучшить:")
+    try:
+        fragile.upgrade()
+    except ValueError as e:
+        print(f"     Ошибка: {e}")
+    
+    print("\n3.4 Ремонт оружия (изменение состояния)")
+    fragile.repair()
+    print(f"   После ремонта: прочность {fragile.durability}%, is_broken = {fragile.is_broken}")
+    
+    print("\n3.5 Снова атакуем после ремонта")
+    damage = fragile.attack()
+    print(f"   Атака: урон {damage}, прочность {fragile.durability}%, is_broken = {fragile.is_broken}")
+    
+    print("\n3.6 Демонстрация разных состояний у разных объектов")
+    legendary = Weapon("Легендарный меч", "sword", "legendary")
+    epic = Weapon("Эпический лук", "bow", "epic")
+    broken = Weapon("Сломанный кинжал", "dagger", "common")
+    broken.durability = 0
+    
+    print(f"   {legendary.get_status()}")
+    print(f"   {epic.get_status()}")
+    print(f"   {broken.get_status()}")
+    
+    # =========================================================================
+    # ИТОГ
+    # =========================================================================
+    print("\n" + "=" * 60)
+    print("ДЕМОНСТРАЦИЯ ЗАВЕРШЕНА")
+    print("=" * 60)
+
 
 if __name__ == "__main__":
     main()

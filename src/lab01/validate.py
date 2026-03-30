@@ -1,8 +1,8 @@
+# src/lab01/validate.py
+
 
 def validate_name(name):
-    """
-    Проверка имени оружия
-    """
+    """Проверка имени оружия"""
     if not isinstance(name, str):
         raise TypeError("Имя должно быть строкой")
     
@@ -13,7 +13,6 @@ def validate_name(name):
     if len(name) < 2:
         raise ValueError("Имя должно содержать минимум 2 символа")
     
-    # Проверка, что имя состоит только из букв и пробелов
     if not all(c.isalpha() or c.isspace() for c in name):
         raise ValueError("Имя должно содержать только буквы и пробелы")
     
@@ -21,9 +20,7 @@ def validate_name(name):
 
 
 def validate_weapon_type(weapon_type, allowed_types):
-    """
-    Проверка типа оружия
-    """
+    """Проверка типа оружия"""
     if not isinstance(weapon_type, str):
         raise TypeError("Тип оружия должен быть строкой")
     
@@ -35,9 +32,7 @@ def validate_weapon_type(weapon_type, allowed_types):
 
 
 def validate_rarity(rarity, allowed_rarities):
-    """
-    Проверка редкости оружия
-    """
+    """Проверка редкости оружия"""
     if not isinstance(rarity, str):
         raise TypeError("Редкость должна быть строкой")
     
@@ -49,9 +44,7 @@ def validate_rarity(rarity, allowed_rarities):
 
 
 def validate_level(level, min_level=1, max_level=10):
-    """
-    Проверка уровня оружия
-    """
+    """Проверка уровня оружия"""
     if not isinstance(level, int):
         raise TypeError("Уровень должен быть целым числом")
     
@@ -62,9 +55,7 @@ def validate_level(level, min_level=1, max_level=10):
 
 
 def validate_durability(durability, min_durability=0, max_durability=100):
-    """
-    Проверка прочности оружия
-    """
+    """Проверка прочности оружия"""
     if not isinstance(durability, (int, float)):
         raise TypeError("Прочность должна быть числом")
     
@@ -75,9 +66,7 @@ def validate_durability(durability, min_durability=0, max_durability=100):
 
 
 def validate_not_broken(is_broken, operation="использовать"):
-    """
-    Проверка, что оружие не сломано
-    """
+    """Проверка, что оружие не сломано"""
     if is_broken:
         raise ValueError(f"Невозможно {operation}! Оружие сломано и требует ремонта.")
     
@@ -85,9 +74,7 @@ def validate_not_broken(is_broken, operation="использовать"):
 
 
 def validate_level_upgrade(current_level, new_level, max_level=10):
-    """
-    Проверка возможности повышения уровня
-    """
+    """Проверка возможности повышения уровня"""
     if new_level < current_level:
         raise ValueError("Нельзя понизить уровень оружия!")
     
