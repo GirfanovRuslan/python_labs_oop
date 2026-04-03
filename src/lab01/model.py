@@ -91,10 +91,13 @@ class Weapon:
     def __repr__(self):
         """В строку для разраба """
         return f"Weapon('{self._name}', '{self._weapon_type}', '{self._rarity}')"
-    def __eq__(self):
-        """"Для сравнения объектов"""
+    def __eq__(self, other):
         if not isinstance(other, Weapon):
             return False
+        return (self._name == other._name and 
+                self._weapon_type == other._weapon_type and 
+                self._rarity == other._rarity and
+                self._level == other._level)
 # Если сравниваем объект с другого класса, они не равны
         return (self._name == other._name and 
                 self._weapon_type == other._weapon_type and 
