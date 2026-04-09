@@ -59,7 +59,7 @@
 | `sort_by_level(reverse)` | Сортировка по уровню |
 | `sort_by_damage(reverse)` | Сортировка по урону |
 | `sort_by_rarity(reverse)` | Сортировка по редкости |
-| `sort(key, reverse)` | Универсальная сортировка |
+
 
 ---
 
