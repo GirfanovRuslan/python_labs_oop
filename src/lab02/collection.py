@@ -1,13 +1,6 @@
-# src/lab02/collection.py
 
-import sys
-import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'lab01'))
-
-from lab01.model import Weapon
-
+from model import Weapon
 
 class WeaponCollection:
     """Класс для хранения колекции объектов Weapon"""
@@ -118,12 +111,6 @@ class WeaponCollection:
         rarity_order = {'common': 0, 'rare': 1, 'epic': 2, 'legendary': 3}
         # lambda берёт числовое значение редкости из словаря
         self._items.sort(key=lambda w: rarity_order.get(w.rarity, 0), reverse=reverse)
-    
-    def sort(self, key, reverse: bool = False):
-        """
-        Универсальная сортировка.
-        """
-        self._items.sort(key=key, reverse=reverse) 
     def filter_by_rarity(self, rarity: str):
         """
         Создаёт и возвращает новую коллекцию с оружием заданной редкости.
@@ -154,31 +141,4 @@ class WeaponCollection:
                 new_collection.add(weapon)
         return new_collection
     
-    # Удобные методы-сокращения для фильтрации по редкости
-    def get_legendary(self):
-        """Возвращает новую коллекцию  с легендарками."""
-        return self.filter_by_rarity('legendary')
-    
-    def get_epic(self):
-        """Возвращает новую коллекцию с эпиками."""
-        return self.filter_by_rarity('epic')
-    
-    def get_rare(self):
-        """Возвращает новую коллекцию с редкими."""
-        return self.filter_by_rarity('rare')
-    
-    def get_common(self):
-        """Возвращает новую коллекцию с обычнымыми ."""
-        return self.filter_by_rarity('common')
-    
-    def get_broken(self):
-        """Возвращает новую коллекцию со сломанным ."""
-        new_collection = WeaponCollection()
-        for weapon in self._items:
-            if weapon.is_broken:  # берется из класс, первая лаба
-                new_collection.add(weapon)
-        return new_collection
-    
-    def get_repairable(self):
-        """Возвращает новую коллекцию с оружием, прочность которого ниже 50%."""
-        return self.filter_by_min_durability(50)
+# ВСЕ

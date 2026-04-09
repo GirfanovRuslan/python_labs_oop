@@ -1,13 +1,6 @@
-# src/lab02/demo.py
 
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'lab01'))
-
-from lab01.model import Weapon
-from lab02.collection import WeaponCollection
+from model import Weapon
+from collection import WeaponCollection
 
 
 def main():
@@ -131,9 +124,7 @@ def main():
     collection3.sort_by_rarity()
     print(collection3)
     
-    print("\n3.7 Фильтрация: только легендарное оружие")
-    legendary_collection = collection3.get_legendary()
-    print(legendary_collection)
+
     
     print("\n3.8 Фильтрация: только оружие с уровнем >= 3")
     high_level = collection3.filter_by_min_level(3)
@@ -152,9 +143,6 @@ def main():
     print("Исходная коллекция:")
     print(all_weapons)
     
-    print("Только эпическое оружие:")
-    epic_weapons = all_weapons.get_epic()
-    print(epic_weapons)
     
     print("\n" + "=" * 60)
     print("ДЕМОНСТРАЦИЯ ЗАВЕРШЕНА")
