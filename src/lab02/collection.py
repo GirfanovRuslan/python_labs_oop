@@ -1,7 +1,7 @@
-
-
-from model import Weapon
-
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from lab03.base import Weapon
 class WeaponCollection:
     """Класс для хранения колекции объектов Weapon"""
     def __init__(self):
