@@ -59,20 +59,6 @@
 **Полиморфный метод:**
 - `get_special_bonus()` - возвращает бонус лука (+20 к дальности)
 
-### Схема иерархии
-
-Weapon (базовый класс)
-├── Sword (меч)
-│   ├── blade_length
-│   ├── is_two_handed
-│   ├── sharpen()
-│   └── get_special_bonus()
-└── Bow (лук)
-    ├── range_meters
-    ├── arrow_type
-    ├── upgrade_bow()
-    └── get_special_bonus()
-
 ---
 
 ## Демонстрация работы
