@@ -1,5 +1,3 @@
-# src/lab03/demo.py
-
 import sys
 import os
 

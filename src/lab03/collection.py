@@ -1,7 +1,5 @@
 
 from base import Weapon
-
-
 class WeaponCollection:
     def __init__(self):
         self._items = []
