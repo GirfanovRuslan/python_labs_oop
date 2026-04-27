@@ -1,4 +1,4 @@
-# src/lab04/demo.py
+
 
 import sys
 import os
@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from lab04.models import Sword, Bow, Staff
 from lab04.collection import WeaponCollection
-from lab04.interfaces import Displayable, Attackable
+from lab04.interfaces import Displayable
 
 
 def print_all_displayable(items):
@@ -36,11 +36,7 @@ def main():
     print(f"   {bow.display_info()}")
     print(f"   {staff.display_info()}")
 
-    print("\n1.2 Attackable метод attack_power():")
-    print(f"   Меч: {sword.attack_power()}")
-    print(f"   Лук: {bow.attack_power()}")
-
-    print("\n1.3 Upgradable метод upgrade():")
+    print("\n1.2 Upgradable метод upgrade():")
     sword.upgrade()
     bow.upgrade()
 
@@ -54,7 +50,6 @@ def main():
     print("\n2.1 Проверка через isinstance():")
     for item in items:
         print(f"   {item.__class__.__name__}: Displayable? {isinstance(item, Displayable)}")
-        print(f"   {item.__class__.__name__}: Attackable? {isinstance(item, Attackable)}")
 
     print("\n2.2 Универсальная функция print_all_displayable():")
     print_all_displayable(items)
@@ -75,10 +70,6 @@ def main():
     print("\n3.2 Фильтрация: только Displayable объекты:")
     for item in collection.get_displayable():
         print(f"   {item.display_info()}")
-
-    print("\n3.3 Фильтрация: только Attackable объекты:")
-    for item in collection.get_attackable():
-        print(f"   Сила атаки: {item.attack_power()}")
 
     print("\n" + "=" * 60)
     print("ДЕМОНСТРАЦИЯ ЗАВЕРШЕНА")
