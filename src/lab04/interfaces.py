@@ -11,4 +11,3 @@ class Upgradable(ABC):
     def upgrade(Self)-> bool:
         """Улучшить оружие"""
         pass
-    
