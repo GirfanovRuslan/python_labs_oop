@@ -39,8 +39,9 @@ class WeaponCollection :
         self._items  =list(filter(predicate, self._items))
         return self
     def apply(self, func):
-        self._items = list(map(func,self._items))
+        self._items = (map(func,self._items))
         return self
+    
     def copy(self):
         """Копия коллекция """
         new_collection = WeaponCollection()

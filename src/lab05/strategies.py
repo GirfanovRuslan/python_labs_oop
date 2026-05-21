@@ -11,11 +11,17 @@ def by_rarity(item):
     return rarity_orde.get(item.rarity,0)
 
 
+
+
 # фабрика функций 
 def make_level_filter(min_level):
     def level_filter(item):
         return item.level>=min_level
     return level_filter
+
+
+
+
 # функции фильтрыы
 def is_legendary(item):
     return item.rarity == "legendary"

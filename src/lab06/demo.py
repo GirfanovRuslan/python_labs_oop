@@ -1,6 +1,4 @@
-import sys
-import os
-
+import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from lab01.model import Weapon
@@ -8,14 +6,12 @@ from lab03.models import Sword, Bow
 from lab06.container import TypedCollection, Displayable, Scorable
 
 
-def patch_classes():
-    def display(self) -> str:
+def patch():
+    def display(self):
         return f"{self.name} (урон: {self.damage})"
-    
-    def score(self) -> float:
+    def score(self):
         return float(self.damage)
-    
-    for cls in [Weapon, Sword, Bow]:
+    for cls in (Weapon, Sword, Bow):
         if not hasattr(cls, 'display'):
             cls.display = display
         if not hasattr(cls, 'score'):
@@ -23,91 +19,51 @@ def patch_classes():
 
 
 def main():
-    print("=" * 60)
-    print("ЛАБОРАТОРНАЯ РАБОТА №6 - GENERICS И TYPING")
-    print("=" * 60)
-    
-    patch_classes()
-    
-    # СЦЕНАРИЙ 1: БАЗОВАЯ РАБОТА
-    print("\n" + "=" * 60)
-    print("СЦЕНАРИЙ 1: БАЗОВАЯ РАБОТА С GENERIC-КОЛЛЕКЦИЕЙ")
-    print("=" * 60)
-    
-    weapons: TypedCollection[Weapon] = TypedCollection()
-    
-    sword = Sword("Экскалибур", "legendary", 90)
-    bow = Bow("Лунный лук", "epic", 80)
-    
-    weapons.add(sword)
-    weapons.add(bow)
-    
-    print("\n1.1 Коллекция после добавления:")
-    print(f"   Количество: {len(weapons)}")
-    
-    print("\n1.2 Все элементы:")
-    for item in weapons.get_all():
-        print(f"   {item}")
-    
-    # СЦЕНАРИЙ 2: FIND, FILTER, MAP
-    print("\n" + "=" * 60)
-    print("СЦЕНАРИЙ 2: МЕТОДЫ FIND, FILTER, MAP")
-    print("=" * 60)
-    
-    col: TypedCollection[Weapon] = TypedCollection()
-    col.add(Sword("Меч А", "common", 80))
-    col.add(Sword("Меч Б", "legendary", 85))
-    col.add(Bow("Лук", "epic", 70))
-    
-    print("\n2.1 find() - поиск legendary:")
-    result = col.find(lambda x: x.rarity == "legendary")
-    print(f"   Найдено: {result}")
-    
-    print("\n2.2 find() - поиск того чего нет:")
-    result = col.find(lambda x: x.level == 10)
-    print(f"   Результат: {result}")
-    
-    print("\n2.3 filter() - только legendary:")
-    filtered = col.filter(lambda x: x.rarity == "legendary")
-    for item in filtered:
-        print(f"   {item}")
-    
-    print("\n2.4 map() - преобразование в имена (List[str]):")
-    names = col.map(lambda x: x.name)
-    print(f"   {names}")
-    
-    print("\n2.5 map() - преобразование в урон (List[int]):")
-    damages = col.map(lambda x: x.damage)
-    print(f"   {damages}")
-    
-    # СЦЕНАРИЙ 3: PROTOCOLS
-    print("\n" + "=" * 60)
-    print("СЦЕНАРИЙ 3: PROTOCOLS И STRUCTURAL TYPING")
-    print("=" * 60)
-    
-    displayable_col: TypedCollection[D] = TypedCollection()
-    displayable_col.add(sword)
-    displayable_col.add(bow)
-    
-    print("\n3.1 TypedCollection с ограничением Displayable:")
-    print(f"   Количество: {len(displayable_col)}")
-    print("   Вызов display() для каждого объекта:")
-    for item in displayable_col:
-        print(f"      {item.display()}")
-    
-    scorable_col: TypedCollection[S] = TypedCollection()
-    scorable_col.add(sword)
-    scorable_col.add(bow)
-    
-    print("\n3.2 TypedCollection с ограничением Scorable:")
-    print(f"   Количество: {len(scorable_col)}")
-    print("   Вызов score() для каждого объекта:")
-    for item in scorable_col:
-        print(f"      {item.name}: {item.score()}")
-    
-    print("\n" + "=" * 60)
-    print("ДЕМОНСТРАЦИЯ ЗАВЕРШЕНА")
-    print("=" * 60)
+    patch()
+    print("=== ЛР-6: GENERICS, PROTOCOLS, FIND/FILTER/MAP ===\n")
+
+    # ----- сценарий 1: вся функциональность ЛР-2 -----
+    print("СЦЕНАРИЙ 1: методы из ЛР-2")
+    col = TypedCollection[Weapon]()
+    col.add(Sword("Экскалибур", "legendary", 90))
+    col.add(Bow("Лунный лук", "epic", 80))
+    col.add(Sword("Меч кладенец", "rare", 85))
+
+    print("get_all:", [w.name for w in col.get_all()])
+    print("find_by_rarity(legendary):", [w.name for w in col.find_by_rarity("legendary")])
+    col.sort_by_name()
+    print("sort_by_name:", [w.name for w in col.get_all()])
+    print("get_legendary():", [w.name for w in col.get_legendary().get_all()])
+
+    # ----- сценарий 2: find / filter / map -----
+    print("\nСЦЕНАРИЙ 2: find / filter / map")
+    col2 = TypedCollection[Weapon]()
+    col2.add(Sword("Меч A", "common", 80))
+    col2.add(Sword("Меч B", "legendary", 85))
+    col2.add(Bow("Лук C", "epic", 70))
+
+    print("find (легендарка):", col2.find(lambda x: x.rarity == "legendary"))
+    print("filter (легендарка):", [w.name for w in col2.filter(lambda x: x.rarity == "legendary")])
+    print("map -> имена:", col2.map(lambda x: x.name))
+    print("map -> урон:", col2.map(lambda x: x.damage))
+
+    # ----- сценарий 3: Protocols + bound -----
+    print("\nСЦЕНАРИЙ 3: Protocols + bound")
+    disp: TypedCollection[D] = TypedCollection()
+    disp.add(Sword("Sword X", "rare", 100))
+    disp.add(Bow("Bow Y", "epic", 90))
+
+    print("display():")
+    for d in disp:
+        print(" ", d.display())
+
+    sc: TypedCollection[S] = TypedCollection()
+    sc.add(Sword("Sword Z", "legendary", 120))
+    sc.add(Bow("Bow W", "common", 50))
+
+    print("score():")
+    for s in sc:
+        print(" ", s.name, "→", s.score())
 
 
 if __name__ == "__main__":
