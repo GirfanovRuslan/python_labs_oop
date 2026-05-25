@@ -1,0 +1,20 @@
+[
+    {
+        "type": "Weapon",
+        "name": "Matvey",
+        "weapon_type": "sword",
+        "rarity": "legendary",
+        "level": 1,
+        "durability": 100,
+        "damage": 30
+    },
+    {
+        "type": "Weapon",
+        "name": "ВИКА",
+        "weapon_type": "bow",
+        "rarity": "epic",
+        "level": 1,
+        "durability": 100,
+        "damage": 16
+    }
+]
